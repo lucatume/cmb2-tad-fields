@@ -1,0 +1,15 @@
+{
+  "name": "lucatume/cmb2-fields",
+  "authors": [
+    "Luca Tumedei <luca@theaveragedev.com>"
+  ],
+  "private": true,
+  "dependencies": {
+    "nestable": "*"
+  },
+  "version": "1.0",
+  "homepage": "http://theaveragedev.com",
+  "description": "Additional field types for the CMB2 WordPress plugin",
+  "main": "cmb2-tad-fields.php",
+  "license": "GPL 2.0"
+}

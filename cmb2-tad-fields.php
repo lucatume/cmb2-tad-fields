@@ -9,37 +9,29 @@
  * License: GPL2
  */
 
-// register autoloading
-spl_autoload_register('tad_cmb2_autoload');
-function tad_cmb2_autoload($class_name)
-{
-    $classes = array(
-        'phpQuery' => '/vendor/phpQuery/phpQuery/phpQuery.php'
-    );
-    if (in_array($class_name, array_keys($classes))) {
-        $path = dirname(__FILE__) . $classes[$class_name];
-        if (file_exists($path)) {
-            include $path;
-        }
-    }
-}
+// autoloading
+require dirname(__FILE__) . '/vendor/autoload_52.php';
 
 add_action('init', 'tad_cmb2_register_scripts_and_styles');
 function tad_cmb2_register_scripts_and_styles()
 {
-    wp_register_script('select2-js', plugins_url('/vendor/select2/dist/js/select2.min.js', __FILE__), array('jquery'));
-    wp_register_style('select2-css', plugins_url('/vendor/select2/dist/css/select2.min.css', __FILE__));
-    wp_register_script('jquery-nestable', plugins_url('/vendor/nestable/js/jquery.nestable.js', __FILE__), array('jquery'));
-    wp_register_style('tad_cmb2_nestable_css', plugins_url('/vendor/nestable/css/nestable.css', __FILE__));
-    wp_register_style('tad_cmb2_styles', plugins_url('/css/tad_cmb2_styles.css', __FILE__));
+    // Bower components
+    wp_register_script('select2-js', plugins_url('/bower_components/select2-dist/dist/js/select2.min.js', __FILE__), array('jquery'));
+    wp_register_style('select2-css', plugins_url('/bower_components/select2-dist/dist/css/select2.min.css', __FILE__));
+    wp_register_script('jquery-nestable', plugins_url('/bower_components/nestable/jquery.nestable.js', __FILE__), array('jquery'));
 
-    wp_register_script('tad_cmb2_select2_init', plugins_url('/js/tad_cmb2_select2_init.js', __FILE__), array('select2-js'));
-    wp_register_script('tad_cmb2_nestable_init', plugins_url('/js/tad_cmb2_nestable_init.js', __FILE__), array('jquery-nestable'));
+    // Plugin styles
+    wp_register_style('tad-cmb2-nestable-css', plugins_url('/css/nestable.css', __FILE__));
+    wp_register_style('tad-cmb2-styles', plugins_url('/css/tad_cmb2_styles.css', __FILE__));
+
+    // Plugin scripts
+    wp_register_script('tad-cmb2-select2-init', plugins_url('/js/tad_cmb2_select2_init.js', __FILE__), array('select2-js'));
+    wp_register_script('tad-cmb2-nestable-init', plugins_url('/js/tad_cmb2_nestable_init.js', __FILE__), array('jquery-nestable'));
 }
 
 function tad_cmb2_default_scripts_styles()
 {
-    wp_enqueue_style('tad_cmb2_styles');
+    wp_enqueue_style('tad-cmb2-styles');
 }
 
 
@@ -49,9 +41,6 @@ function tad_cmb2_default_scripts_styles()
 add_action('cmb2_render_tad_select2', 'tad_cmb2_the_select2', 10, 5);
 function tad_cmb2_get_select2(CMB2_Field $field, $escaped_value, $object_id, $object_type, CMB2_Types $types)
 {
-    tad_cmb2_default_scripts_styles();
-    wp_enqueue_style('select2-css');
-    wp_enqueue_script('tad_cmb2_select2_init');
     $args = array('class' => 'select2');
 
     return $types->select($args);
@@ -59,6 +48,9 @@ function tad_cmb2_get_select2(CMB2_Field $field, $escaped_value, $object_id, $ob
 
 function tad_cmb2_the_select2(CMB2_Field $field, $escaped_value, $object_id, $object_type, CMB2_Types $types)
 {
+    tad_cmb2_default_scripts_styles();
+    wp_enqueue_style('select2-css');
+    wp_enqueue_script('tad-cmb2-select2-init');
     echo tad_cmb2_get_select2($field, $escaped_value, $object_id, $object_type, $types);
 }
 
@@ -68,9 +60,6 @@ function tad_cmb2_the_select2(CMB2_Field $field, $escaped_value, $object_id, $ob
 add_action('cmb2_render_tad_select2_add', 'tad_cmb2_the_select2_action', 10, 5);
 function tad_cmb2_get_select2_action(CMB2_Field $field, $escaped_value, $object_id, $object_type, CMB2_Types $types)
 {
-    tad_cmb2_default_scripts_styles();
-    wp_enqueue_style('select2-css');
-    wp_enqueue_script('tad_cmb2_select2_init');
     $args = array('class' => 'select2');
 
     $button_args = $field->args['button'];
@@ -89,6 +78,9 @@ function tad_cmb2_get_select2_action(CMB2_Field $field, $escaped_value, $object_
 
 function tad_cmb2_the_select2_action(CMB2_Field $field, $escaped_value, $object_id, $object_type, CMB2_Types $types)
 {
+    tad_cmb2_default_scripts_styles();
+    wp_enqueue_style('select2-css');
+    wp_enqueue_script('tad-cmb2-select2-init');
     echo tad_cmb2_get_select2_action($field, $escaped_value, $object_id, $object_type, $types);
 }
 
@@ -98,142 +90,49 @@ function tad_cmb2_the_select2_action(CMB2_Field $field, $escaped_value, $object_
 add_action('cmb2_render_tad_nested_list', 'tad_cmb2_the_nested_list', 10, 5);
 function tad_cmb2_the_nested_list(CMB2_Field $field, $escaped_value, $object_id, $object_type, CMB2_Types $types)
 {
-    echo tad_cmb2_get_nested_list($field, $types);
+    wp_enqueue_script('tad-cmb2-nestable-init');
+    wp_enqueue_style('tad-cmb2-nestable-css');
+    echo tad_cmb2_get_nested_list($field, $escaped_value, $object_id, $object_type, $types);
 }
 
-function tad_cmb2_get_nested_list(CMB2_Field $field, CMB2_Types $types, $list_class = 'dd single')
+function tad_cmb2_get_nested_list(CMB2_Field $field, $escaped_value, $object_id, $object_type, CMB2_Types $types, $list_class = 'dd single')
 {
-    wp_enqueue_script('tad_cmb2_nestable_init');
-    wp_enqueue_style('tad_cmb2_nestable_css');
+    $items = empty($field->value) ? $field->args['options'] : json_decode($field->value);
 
-    $wrapper = tad_cmb2_get_nested_list_wrapper($field, $types, $list_class);
-
-    $open = tad_cmb2_get_nested_list_open($field, $types);
-
-    $element_attrs = tad_cmb2_get_nested_list_element_attrs($field, $types);
-
-    $options = $field->args['options'];
-
-    $out = tad_cmb2_get_nestable_list_markup($element_attrs, $wrapper, $options, $open);
-
-    return $out;
-}
-
-/**
- * @param CMB2_Field $field
- * @param CMB2_Types $types
- * @return array|string
- */
-function tad_cmb2_get_nested_list_element_attrs(CMB2_Field $field, CMB2_Types $types)
-{
-    $element_default_attrs = array('class' => 'dd-item');
-    $element_attrs = empty($field->args['element_attrs']) ? array() : $field->args['element_attrs'];
-    $element_attrs = $types->concat_attrs(array_merge($element_default_attrs, $element_attrs));
-    return $element_attrs;
-}
-
-/**
- * @param CMB2_Field $field
- * @param CMB2_Types $types
- * @return string
- */
-function tad_cmb2_get_nested_list_open(CMB2_Field $field, CMB2_Types $types)
-{
-    $open = '<ol %s>';
-    $open_attrs = empty($field->args['open_attrs']) ? array() : $field->args['open_attrs'];
-    $open_default_args = array('class' => 'dd-list');
-    $open = sprintf($open, $types->concat_attrs(array_merge($open_default_args, $open_attrs)));
-    return $open;
-}
-
-/**
- * @param CMB2_Field $field
- * @param CMB2_Types $types
- * @param $list_class
- * @return string
- */
-function tad_cmb2_get_nested_list_wrapper(CMB2_Field $field, CMB2_Types $types, $list_class)
-{
-    $wrapper = '<div %s>';
-    $wrapper_attrs = empty($field->args['wrapper_attrs']) ? array() : $field->args['wrapper_attrs'];
-    $wrapper_default_args = array('class' => $list_class);
-    $wrapper = sprintf($wrapper, $types->concat_attrs(array_merge($wrapper_default_args, $wrapper_attrs)));
-    return $wrapper;
-}
-
-/**
- * @param $element_attrs
- * @param $wrapper
- * @param $options
- * @param $open
- * @return string
- */
-function tad_cmb2_get_nestable_list_markup($element_attrs, $wrapper, $options, $open)
-{
-    $element_template = '<li' . $element_attrs . ' data-id="%s"><div class="dd-handle">%s</div></li>';
-
-    // open the wrapper
-    $out = $wrapper;
-    // build the nested list
-    $out .= tad_cmb2_render_nested_list($options, $element_template, $open);
-    // close list wrapper
+    $id = $field->args['id'];
+    $out = sprintf('<div class="dd single" id="%s" data-output="%s">', $id, $id);
+    $out .= tad_cmb2_render_nested_list($items, $field, $types);
     $out .= '</div>';
+    $out .= sprintf('<input type="hidden" name="%s" id="%s" value="%s">', $id, $id, $field->value);
+
     return $out;
 }
 
-function tad_cmb2_render_nested_list($options, $element_template, $open = null, $close = null)
+function tad_cmb2_render_nested_list($options, CMB2_Field $field, CMB2_Types $types)
 {
-    $out = empty($open) ? '<ol class="dd-list">' : $open;
-
-    foreach ($options as $key => $value) {
-        if (!is_array($value)) {
-            $out .= sprintf($element_template, $key, $value);
-            continue;
+    $out = '<ol class="dd-list">';
+    if (!empty($options)) {
+        foreach ($options as $key => $data) {
+            $children = '';
+            $element_attrs = array();
+            foreach ($data as $sub_key => $sub_value) {
+                if ($sub_key != 'children') {
+                    // add the key as a data attribute for the list element
+                    $element_attrs['data-' . $sub_key] = $sub_value;
+                } else {
+                    $children = tad_cmb2_render_nested_list($sub_value, $field, $types);
+                }
+            }
+            // render the element
+            ksort($element_attrs);
+            $text = empty($element_attrs['data-text']) ? '' . reset($element_attrs) : $element_attrs['data-text'];
+            $element_attrs['class'] = empty($element_attrs['class']) ? 'dd-item' : 'dd-item ' . $element_attrs['class'];
+            $out .= sprintf('<li %s><div class="dd-handle">%s</div>%s', $types->concat_attrs($element_attrs), $text, $children);
+            // close the list element
+            $out .= '</li>';
         }
-        $out .= tad_cmb2_render_nested_list($value, $element_template);
     }
-
-    $out .= empty($close) ? '</ol>' : $close;
+    $out .= '</ol>';
 
     return $out;
-}
-
-add_action('cmb2_render_tad_dual_nested_list', 'tad_cmb2_the_dual_nestable_list', 10, 5);
-function tad_cmb2_get_dual_nestable_list(CMB2_Field $field, $escaped_value, $object_id, $object_type, CMB2_Types $types)
-{
-    wp_enqueue_script('tad_cmb2_nestable_init');
-    wp_enqueue_style('tad_cmb2_nestable_css');
-
-    $included_wrapper = tad_cmb2_get_nested_list_wrapper($field, $types, 'dd dual');
-    $excluded_wrapper = tad_cmb2_get_nested_list_wrapper($field, $types, 'dd dual flat-list');
-
-    $open = tad_cmb2_get_nested_list_open($field, $types);
-
-    $element_attrs = tad_cmb2_get_nested_list_element_attrs($field, $types);
-
-    // @todo: get the options using the meta value
-    $included_options = $field->args['options'];
-    $excluded_options = array();
-    tad_cmb2_flatten_options($field->args['options'], $excluded_options);
-
-    $out = tad_cmb2_get_nestable_list_markup($element_attrs, $included_wrapper, $included_options, $open);
-    $out .= tad_cmb2_get_nestable_list_markup($element_attrs, $excluded_wrapper, $excluded_options, $open);
-
-    return $out;
-}
-
-function tad_cmb2_the_dual_nestable_list(CMB2_Field $field, $escaped_value, $object_id, $object_type, CMB2_Types $types)
-{
-    echo tad_cmb2_get_dual_nestable_list($field, $escaped_value, $object_id, $object_type, $types);
-}
-
-function tad_cmb2_flatten_options(array $options, array &$flat)
-{
-    foreach ($options as $option => $value) {
-        if (is_array($value)) {
-            tad_cmb2_flatten_options($value, $flat);
-            continue;
-        }
-        $flat[] = $value;
-    }
 }

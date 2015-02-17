@@ -1,0 +1,165 @@
+//colors
+$color_mine_shaft_approx: #333;
+$color_celeste_approx: #ccc;
+$alabaster: #fafafa;
+$color_gallery_approx: #eee;
+$color_picton_blue_approx: #2ea8e5;
+$white: #fff;
+$color_alice_blue_approx: #f2fbff;
+$color_french_gray_approx: #b6bcbf;
+$color_pink_swan_approx: #bbb;
+$mercury: #e5e5e5;
+$black_10: rgba(0,0,0,.1);
+$color_alto_approx: #ddd;
+$color_mountain_mist_approx: #999;
+
+//fonts
+$font_0: Consolas;
+$font_1: monospace;
+
+//@extend-elements
+//original selectors
+//.dd-item, .dd-empty, .dd-placeholder
+%extend_1 {
+  display: block;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  min-height: 20px;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+//original selectors
+//.dd-placeholder, .dd-empty
+%extend_2 {
+  margin: 5px 0;
+  padding: 0;
+  min-height: 30px;
+  background: $color_alice_blue_approx;
+  border: 1px dashed $color_french_gray_approx;
+  //Instead of the line below you could use @includebox-sizing($bs)
+  box-sizing: border-box;
+}
+
+.dd {
+  position: relative;
+  display: block;
+  margin: 0;
+  padding: 0;
+  max-width: 600px;
+  list-style: none;
+  font-size: 13px;
+  line-height: 20px;
+}
+.dd-list {
+  display: block;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  .dd-list {
+    padding-left: 30px;
+  }
+}
+.dd-item {
+  @extend %extend_1;
+  > {
+    button {
+      display: block;
+      position: relative;
+      cursor: pointer;
+      float: left;
+      width: 25px;
+      height: 20px;
+      margin: 5px 0;
+      padding: 0;
+      text-indent: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      border: 0;
+      background: transparent;
+      font-size: 12px;
+      line-height: 1;
+      text-align: center;
+      font-weight: bold;
+      &:before {
+        content: '+';
+        display: block;
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        text-indent: 0;
+      }
+    }
+    button[data-action="collapse"]:before {
+      content: '-';
+    }
+  }
+}
+.dd-empty {
+  @extend %extend_1;
+  @extend %extend_2;
+  border: 1px dashed $color_pink_swan_approx;
+  min-height: 100px;
+  background-color: $mercury;
+  background-image: linear-gradient(45deg, $white 25%, transparent 25%, transparent 75%, $white 75%, $white), linear-gradient(45deg, $white 25%, transparent 25%, transparent 75%, $white 75%, $white);
+  background-size: 60px 60px;
+  background-position: 0 0, 30px 30px;
+}
+.dd-placeholder {
+  @extend %extend_1;
+  @extend %extend_2;
+}
+.dd-handle {
+  display: block;
+  height: 30px;
+  margin: 5px 0;
+  padding: 5px 10px;
+  color: $color_mine_shaft_approx;
+  text-decoration: none;
+  font-weight: bold;
+  border: 1px solid $color_celeste_approx;
+  background: linear-gradient(top, $alabaster 0, $color_gallery_approx 100%);
+  //Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
+  border-radius: 3px;
+  //Instead of the line below you could use @includebox-sizing($bs)
+  box-sizing: border-box;
+  &:hover {
+    color: $color_picton_blue_approx;
+    background: $white;
+  }
+}
+.dd-dragel {
+  position: absolute;
+  pointer-events: none;
+  z-index: 9999;
+  .dd-handle {
+    //Instead of the line below you could use @includebox-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+    box-shadow: 2px 4px 6px 0 $black_10;
+  }
+  > .dd-item .dd-handle {
+    margin-top: 0;
+  }
+}
+
+@media only screen and (min-width: 700px) {
+.dd {
+  float: left;
+  &.single{
+    width: 100%;
+  }
+  &.dual{
+    width: 48%;
+  }
+  + .dd {
+    margin-left: 2%;
+  }
+}
+}
+.dd-collapsed .dd-list {
+  display: none;
+}
+.dd-hover > .dd-handle {
+  background: $color_picton_blue_approx !important;
+}
