@@ -24,6 +24,7 @@
 
     $(document).ready(function () {
         init_nestable();
+        update_value();
         //$('body').on('cmb2_add_row cmb2_remove_row', init_nestable());
     });
 })(jQuery, window);
