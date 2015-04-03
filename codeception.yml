@@ -1,0 +1,27 @@
+actor: Tester
+paths:
+    tests: tests
+    log: tests/_output
+    data: tests/_data
+    helpers: tests/_support
+settings:
+    bootstrap: _bootstrap.php
+    colors: true
+    memory_limit: 1024M
+modules:
+    config:
+        WPLoader:
+            wpRootFolder: "/Users/User/www/wp"
+            dbNAme: "wordpress-tests"
+            dbHost: localhost
+            dbUser: root
+            dbPassword: root
+            wpDebug: true
+            dbCharset: "utf8"
+            dbCollate: ""
+            tablePrefix: "wp_"
+            domain: "wp.local"
+            adminEmail: "admin@wp.local"
+            title: "Test Blog"
+            phpBinary: "php"
+            language: ""
