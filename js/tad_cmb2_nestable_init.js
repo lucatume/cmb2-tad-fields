@@ -1,29 +1,46 @@
-(function ($, window, undefined) {
-    'use strict';
+(function ( $, window, undefined ) {
+	'use strict';
 
+	var tad = window.tad || {};
+	var bus = tad.bus || _.extend( {}, Backbone.Events );
 
-    function update_value(e) {
-        var list = e.length ? e : $(e.target),
-            output = $('input[name="' + list.data('output') + '"]');
-        if (window.JSON) {
-            output.val(window.JSON.stringify(list.nestable('serialize')));
-        } else {
-            output.val('JSON browser support required!');
-        }
-    }
-	function init_nestable() {
-        var lists = $('.dd:not(.flat-list)');
-        lists.nestable();
-        lists.on('change', update_value);
+	var NestableList = Backbone.View.extend( {
+		getLIstValue: function () {
+			var newValue = this.$el.nestable( 'serialize' );
+			return newValue;
+		},
+		dispatchChange: function () {
+			var newValue = this.getLIstValue();
+			bus.trigger( 'tad-cmb2:nestable-list-change', newValue, this.$el );
+			this.model.set( 'value', newValue );
+		},
+		initialize: function () {
+			this.$el.nestable().on( 'change', _.bind( this.dispatchChange, this ) );
+			this.dispatchChange();
+		}
+	} );
 
-        $('.dd.flat-list').nestable({
-            maxDepth: 1
-        });
-    }
+	var NestableInput = Backbone.View.extend( {
+		render: function () {
+			var value = JSON.stringify( this.model.get( 'value' ) );
+			this.$el.val( value );
+		},
+		initialize: function () {
+			this.listenTo( this.model, 'change', this.render );
+		}
+	} );
 
-    $(document).ready(function () {
-        init_nestable();
-        update_value();
-        //$('body').on('cmb2_add_row cmb2_remove_row', init_nestable());
-    });
-})(jQuery, window);
+	var NestableListValue = Backbone.Model.extend( {
+		value: ''
+	} );
+
+	$( document ).ready( function () {
+		_.each( $( '.dd' ), function ( list ) {
+			var $list = $( list );
+			var $input = $list.siblings( 'input[type="hidden"]' );
+			var listValue = new NestableListValue();
+			new NestableInput( {el: $input, model: listValue} );
+			new NestableList( {el: $list, model: listValue} );
+		} );
+	} );
+})( jQuery, window );

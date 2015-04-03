@@ -15,6 +15,11 @@
   border: 1px dashed #b6bcbf;
   box-sizing: border-box; }
 
+/*Fix for repeatable fields*/
+.cmb-row.cmb-type-nestable-list .cmb-field-list .cmb-td:not(.cmb-remove-row) {
+  width: 100%;
+  float: right; }
+
 .dd {
   position: relative;
   display: block;
@@ -23,7 +28,8 @@
   max-width: 600px;
   list-style: none;
   font-size: 13px;
-  line-height: 20px; }
+  line-height: 20px;
+  float: right; }
 
 .dd-list {
   display: block;
@@ -97,7 +103,7 @@
 
 @media only screen and (min-width: 700px) {
   .dd {
-    float: left; }
+    float: right; }
     .dd.single {
       width: 100%; }
     .dd.dual {
@@ -109,3 +115,5 @@
 
 .dd-hover > .dd-handle {
   background: #2ea8e5 !important; }
+
+/*# sourceMappingURL=nestable.css.map */

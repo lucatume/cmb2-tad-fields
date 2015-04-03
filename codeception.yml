@@ -1,27 +1,36 @@
 actor: Tester
 paths:
-    tests: tests
-    log: tests/_output
     data: tests/_data
     helpers: tests/_support
+    log: tests/_output
+    tests: tests
 settings:
     bootstrap: _bootstrap.php
     colors: true
     memory_limit: 1024M
 modules:
     config:
+        WPDb:
+            checkExistence: true
+            cleanup: true
+            dsn: "mysql:host=localhost;dbname=wordpress-tests"
+            dump: tests/_data/dump.sql
+            password: root
+            populate: true
+            tablePrefix: wp_
+            update: true
+            url: http://wp.local
+            user: root
         WPLoader:
-            wpRootFolder: "/Users/User/www/wp"
-            dbNAme: "wordpress-tests"
+            adminEmail: admin@wp.local
+            dbCharset: utf8
             dbHost: localhost
-            dbUser: root
+            dbNAme: wordpress-tests
             dbPassword: root
-            wpDebug: true
-            dbCharset: "utf8"
-            dbCollate: ""
-            tablePrefix: "wp_"
-            domain: "wp.local"
-            adminEmail: "admin@wp.local"
+            dbUser: root
+            domain: wp.local
+            phpBinary: php
+            tablePrefix: wp_
             title: "Test Blog"
-            phpBinary: "php"
-            language: ""
+            wpDebug: true
+            wpRootFolder: "/Users/User/www/wp"

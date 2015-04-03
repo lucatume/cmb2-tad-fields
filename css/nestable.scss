@@ -42,6 +42,12 @@ $font_1: monospace;
   box-sizing: border-box;
 }
 
+/*Fix for repeatable fields*/
+.cmb-row.cmb-type-nestable-list .cmb-field-list .cmb-td:not(.cmb-remove-row){
+  width : 100%;
+  float : right;
+}
+
 .dd {
   position: relative;
   display: block;
@@ -51,6 +57,7 @@ $font_1: monospace;
   list-style: none;
   font-size: 13px;
   line-height: 20px;
+  float : right;
 }
 .dd-list {
   display: block;
@@ -145,7 +152,7 @@ $font_1: monospace;
 
 @media only screen and (min-width: 700px) {
 .dd {
-  float: left;
+  float: right;
   &.single{
     width: 100%;
   }

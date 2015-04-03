@@ -1,13 +1,34 @@
-(function ($, undefined) {
-    'use strict';
+(function ( $, undefined ) {
+	'use strict';
 
-    function init_select2() {
-        $('.select2').siblings('span.select2-container').remove();
-        $('.select2').select2();
-    }
+	var tad = window.tad || {};
+	var bus = tad.bus || _.extend( {}, Backbone.Events );
 
-    $(document).ready(function () {
-        init_select2();
-        $('body').on('cmb2_add_row cmb2_remove_row', init_select2);
-    });
-})(jQuery);
+	var Select2Field = Backbone.View.extend( {
+		render: function () {
+			this.$el.select2();
+		},
+		maybeRerender: function ( evt ) {
+			if ( evt.target === this.$el.closest( '.cmb-repeat-table' )[0] ) {
+				this.$el.select2( 'destroy' );
+			}
+			this.render();
+		},
+		initialize: function () {
+			bus.on( 'cmb2:add_row', _.bind( this.maybeRerender, this ) );
+			this.render();
+		}
+	} );
+
+	function busUpdate( $row ) {
+		return bus.trigger( 'cmb2:add_row', $row );
+	}
+
+	$( document ).ready( function () {
+		_.each( $( '.select2' ), function ( el ) {
+			new Select2Field( {el: $( el )} );
+		} );
+
+		$( 'body' ).on( 'cmb2_add_row', busUpdate );
+	} );
+})( jQuery );
