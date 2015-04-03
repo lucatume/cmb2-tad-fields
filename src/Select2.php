@@ -13,8 +13,13 @@
 			wp_enqueue_style( 'select2-css' );
 		}
 
-		protected function output() {
+		protected function output( $return = false ) {
 			$args = array( 'class' => 'select2' );
-			echo $this->types->select( $args );
+			$out  = $this->types->select( $args );
+			if ( $return ) {
+				return $out;
+			}
+
+			echo $out;
 		}
 	}

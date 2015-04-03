@@ -11,5 +11,6 @@ class tad_cmb2_Fields
     {
         add_action('cmb2_render_select2', array(tad_cmb2_Select2::instance(), 'render'), 10, 5);
         add_action('cmb2_render_nestable_list', array(tad_cmb2_NestableList::instance(), 'render'), 10, 5);
+        add_action('cmb2_render_dual_nestable_list', array(tad_cmb2_DualNestableList::instance(), 'render'), 10, 5);
     }
 }

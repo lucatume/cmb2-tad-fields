@@ -24,12 +24,16 @@
   position: relative;
   display: block;
   margin: 0;
-  padding: 0;
-  max-width: 600px;
+  padding: 1em;
+  width: 100%;
   list-style: none;
   font-size: 13px;
   line-height: 20px;
-  float: right; }
+  float: right;
+  border-radius: 3px;
+  border: 1px solid #aaaaaa; }
+  .dd:nth-child(n+2) {
+    margin-top: 1em; }
 
 .dd-list {
   display: block;

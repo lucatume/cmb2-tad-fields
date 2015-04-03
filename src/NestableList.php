@@ -7,12 +7,12 @@
 			return new self;
 		}
 
-		private function get_nested_list( $list_class = 'dd single' ) {
+		protected function get_nested_list( $list_class = 'dd single' ) {
 
 			$elements = $this->get_aligned_field_list_elements();
 
 			$id  = $this->field->args['id'];
-			$out = sprintf( '<div class="dd single" id="%s" data-output="%s">', $id, $id );
+			$out = sprintf( '<div class="dd single" data-output="%s">', $id );
 			$out .= $this->get_list_markup( $elements );
 			$out .= '</div>';
 			$out .= sprintf( '<input type="hidden" name="%s" id="%s" value="%s">', $id, $id, $this->field->value );
@@ -20,11 +20,13 @@
 			return $out;
 		}
 
-		private function get_list_markup( $elements ) {
+		protected function get_list_markup( $elements ) {
 			$out                     = '';
 			$element_attrs_whitelist = array();
-			if ( ! empty( $elements ) ) {
-				$out = '<ol class="dd-list">';
+			$out                     = '<ol class="dd-list">';
+			if ( empty( $elements ) ) {
+				$out .= '<div class="dd-empty"></div>';
+			} else {
 				foreach ( $elements as $key => $data ) {
 					$children      = '';
 					$element_attrs = array();
@@ -45,27 +47,23 @@
 					// close the list element
 					$out .= '</li>';
 				}
-				$out .= '</ol>';
 			}
+			$out .= '</ol>';
 
 			return $out;
 		}
 
-		private function align_items( $key, array $legit, array $items = null ) {
+		protected function align_items( $key, array $legit, array $items = null ) {
 			if ( empty( $items ) ) {
 				return $legit;
 			}
-			$legit_keys = array();
-			foreach ( $legit as $entry => $data ) {
-				if ( empty( $data[ $key ] ) ) {
-					continue;
-				}
-				$legit_keys[] = $data[ $key ];
-			}
 
-			// any item that's not in the options remove
+			$legit_keys = $this->get_elements_key_values( $legit, $key );
+
+			// any item that hasn't got a legit key remove
 			$found    = array();
 			$filtered = $this->prune( $key, $legit_keys, $items, $found );
+
 			// any item that's in the options and not in the items append to the items
 			$to_add = array_diff( $legit_keys, $found );
 
@@ -78,7 +76,7 @@
 			return $filtered;
 		}
 
-		private function prune( $key, $legit_keys, $items, &$found_keys ) {
+		protected function prune( $key, array $legit_keys, array $items, array &$found_keys ) {
 			$pruned = array();
 			foreach ( $items as $item => $data ) {
 				if ( isset( $data['children'] ) ) {
@@ -98,16 +96,15 @@
 			return $pruned;
 		}
 
-		private function get_aligned_field_list_elements() {
+		protected function get_aligned_field_list_elements() {
+			$items = array();
 			if ( isset( $this->field->args['primary_key'] ) && isset( $this->field->value ) ) {
 				$items = $this->align_items( $this->field->args['primary_key'], $this->field->args['options'], json_decode( $this->field->value, true ) );
-
-				return $items;
 			} else {
 				$items = $this->field->args['options'];
-
-				return $items;
 			}
+
+			return $items;
 		}
 
 		protected function queue() {
@@ -115,8 +112,55 @@
 			wp_enqueue_style( 'tad-cmb2-nestable-css' );
 		}
 
-		protected function output() {
-			echo $this->get_nested_list();
+		protected function output( $return = false ) {
+			$out = $this->get_nested_list();
+			if ( $return ) {
+				return $out;
+			}
+
+			echo $out;
+		}
+
+		/**
+		 * @param array $elements
+		 * @param       $key
+		 *
+		 * @return array
+		 */
+		protected function get_elements_key_values( array $elements, $key ) {
+			$legit_keys = array();
+			foreach ( $elements as $entry => $data ) {
+				if ( isset( $data['children'] ) ) {
+					$ret        = $this->get_elements_key_values( $data['children'], $key );
+					$legit_keys = array_merge( $legit_keys, $ret );
+				}
+				if ( empty( $data[ $key ] ) ) {
+					continue;
+				}
+				$legit_keys[] = $data[ $key ];
+			}
+
+			return $legit_keys;
+		}
+
+		protected function diff( $key, array $diff_keys, array $items = null, array &$found_keys ) {
+			$diffed = array();
+			foreach ( $items as $item => $data ) {
+				if ( isset( $data['children'] ) ) {
+					$data['children'] = $this->diff( $key, $diff_keys, $data['children'], $found_keys );
+				}
+				if ( isset( $data[ $key ] ) && in_array( $data[ $key ], $diff_keys ) ) {
+					// if not saving data save the detached children
+					if ( isset( $data['children'] ) ) {
+						$diffed = array_merge( $diffed, $data['children'] );
+					}
+					continue;
+				}
+				$diffed[]     = $data;
+				$found_keys[] = $data[ $key ];
+			}
+
+			return $diffed;
 		}
 
 	}

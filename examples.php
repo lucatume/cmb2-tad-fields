@@ -33,9 +33,8 @@ function cmb2_sample_metaboxes($meta_boxes = null)
     $cmb->add_field(array(
         'name' => __('Nestable list', 'tad_cmb2') ,
         'desc' => __('Click and drag the elements to sort and nest them!', 'tad_cmb2') ,
-        'id' => $prefix . 'text',
+        'id' => $prefix . 'nestable_list',
         'type' => 'nestable_list',
-        'repeatable' => true,
         'options' => array(
 
             // any attribute below will be translated in a `data-*` attribute.
@@ -78,7 +77,6 @@ function cmb2_sample_metaboxes($meta_boxes = null)
         'desc' => __('Type some letters to have select2 autocomplete kick in!', 'tad_cmb2') ,
         'id' => $prefix . 'select2',
         'type' => 'select2',
-        'repeatable' => true,
         'options' => array (
             'Tony Penrod',
             'Columbus Stiffler',
@@ -131,5 +129,46 @@ function cmb2_sample_metaboxes($meta_boxes = null)
             'Annalee Falgoust',
             'Devora Gearing'
         )
+    ));
+
+    // Dual nestable list
+    $cmb->add_field(array(
+        'name' => __('Dual nestable list', 'tad_cmb2') ,
+        'desc' => __('Click and drag the elements to move them from one list to another, sort and nest them!', 'tad_cmb2') ,
+        'id' => $prefix . 'dual_nestable_list',
+        'type' => 'dual_nestable_list',
+        'options' => array(
+            // any attribute below will be translated in a `data-*` attribute.
+            // the `text` attribute will also be used as the element label
+            array(
+                'id' => 1,
+                'text' => 'One'
+            ) ,
+            array(
+                'id' => 2,
+                'text' => 'Two'
+            ) ,
+            array(
+                'id' => 3,
+                'text' => 'Three'
+            ) ,
+            array(
+                'id' => 4,
+                'text' => 'Four'
+            ) ,
+            array(
+                'id' => 5,
+                'text' => 'Five'
+            ) ,
+            array(
+                'id' => 6,
+                'text' => 'Six'
+            )
+        ) ,
+
+        // the attribute to use to sort the elements
+        // has to be defined in all the list elements
+        // has to be unique in all the list elements
+        'primary_key' => 'id'
     ));
 }

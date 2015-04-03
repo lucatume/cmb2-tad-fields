@@ -51,7 +51,7 @@
 			// no op;
 		}
 
-		protected function output() {
+		protected function output($return = false) {
 			// no op
 		}
 	}
