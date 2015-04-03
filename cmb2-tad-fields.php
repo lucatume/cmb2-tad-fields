@@ -9,8 +9,48 @@
  * License: GPL2
  */
 
-// autoloading
-require dirname(__FILE__) . '/vendor/autoload_52.php';
+/**
+ * Takes care of the attempted autoloading of a class.
+ *
+ * Presumes classes are under the `/src` dir relative to the dir this file lives
+ * in and that classes are properly named.
+ * Given `$prefix` as `some_plugin`:
+ *
+ *      some_plugin_SomeClass
+ *
+ * will map to:
+ *
+ *      /src/SomeClass.php
+ *
+ *  Modify the `$sep` variable to map class names to sub-folders.
+ *  Given `$sep` as `_`:
+ *
+ *      some_Plugin_PseudoNamespace_SomeClass
+ *
+ * will map to
+ *
+ *      /src/PseudoNamespace/SomeClass.php
+ *
+ * Class names will be long no matter what.
+ *
+ * @param string $class The class name
+ */
+function tad_cmb2_autoload($class)
+{
+    $prefix = 'tad_cmb2_';
+    $sep = '_';
+
+    if (!strpos($class, $prefix) === 0) {
+        return;
+    }
+    // `prefix_Some_Name_Space_SomeClass` to `/src/Some/Name/Space/SomeClass.php`
+    $class_name = str_replace($sep, DIRECTORY_SEPARATOR, str_replace($prefix, '', $class));
+    if (!(file_exists($class_file = dirname(__FILE__) . '/src/' . $class_name . '.php'))) {
+        return;
+    }
+    require $class_file;
+}
+spl_autoload_register('tad_cmb2_autoload');
 
 add_action('init', 'tad_cmb2_register_scripts_and_styles');
 function tad_cmb2_register_scripts_and_styles()

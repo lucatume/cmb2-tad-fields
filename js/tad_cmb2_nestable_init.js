@@ -10,9 +10,8 @@
         } else {
             output.val('JSON browser support required!');
         }
-    };
-
-    function init_nestable() {
+    }
+	function init_nestable() {
         var lists = $('.dd:not(.flat-list)');
         lists.nestable();
         lists.on('change', update_value);

@@ -130,7 +130,7 @@ function testIframeWithCallback( title, fileName, func ) {
 			.append( jQuery( "<iframe/>" ).attr( "src", url( "./data/" + fileName ) ) )
 			.appendTo( "#qunit-fixture" );
 	});
-};
+}
 window.iframeCallback = undefined;
 
 function moduleTeardown() {}
