@@ -41,7 +41,7 @@ class tad_cmb2_NestableList implements tad_cmb2_FieldInterface
     private function render_nested_list($options, CMB2_Field $field, CMB2_Types $types)
     {
         $out = '';
-        $element_attrs_whitelist = [];
+        $element_attrs_whitelist = array();
         if (!empty($options)) {
             $out = '<ol class="dd-list">';
             foreach ($options as $key => $data) {
