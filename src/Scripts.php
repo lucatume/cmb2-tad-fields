@@ -8,9 +8,9 @@
 		}
 
 		public function hook() {
-			add_action( 'init', array( $this, 'register_components' ) );
-			add_action( 'init', array( $this, 'register_scripts' ) );
-			add_action( 'init', array( $this, 'register_styles' ) );
+			add_action( 'admin_init', array( $this, 'register_components' ) );
+			add_action( 'admin_init', array( $this, 'register_scripts' ) );
+			add_action( 'admin_init', array( $this, 'register_styles' ) );
 		}
 
 		function register_components() {

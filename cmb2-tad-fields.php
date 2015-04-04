@@ -16,4 +16,5 @@
 	tad_cmb2_Fields::instance()->hook();
 	tad_cmb2_Scripts::instance()->hook();
 
-	include 'examples.php';
+	// Include the example file to have a demo of the fields on pages.
+	// include 'examples.php';

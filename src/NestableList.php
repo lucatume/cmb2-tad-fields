@@ -80,7 +80,10 @@
 			return $filtered;
 		}
 
-		protected function prune( $key, array $legit_keys, array $items, array &$found_keys ) {
+		protected function prune( $key, array $legit_keys, $items = array(), array &$found_keys ) {
+			if ( empty( $items ) ) {
+				return array();
+			}
 			$pruned = array();
 			foreach ( $items as $item => $data ) {
 				if ( isset( $data['children'] ) ) {

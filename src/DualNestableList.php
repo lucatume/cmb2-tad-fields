@@ -8,19 +8,9 @@
 		}
 
 		/**
-		 * Initializes and echoes the field to the page.
-		 *
-		 * @param CMB2_Field $field
-		 * @param            $escaped_value
-		 * @param            $object_id
-		 * @param            $object_type
-		 * @param CMB2_Types $types
-		 *
-		 * @return void Echoes to the page.
+		 * @return string
 		 */
-		public function render( CMB2_Field $field, $escaped_value, $object_id, $object_type, CMB2_Types $types ) {
-			$this->initialize( $field, $escaped_value, $object_id, $object_type, $types );
-
+		protected function output( $return = false ) {
 			$primary_key = $this->field->args( 'primary_key' );
 
 			if ( ! $primary_key ) {
@@ -54,6 +44,10 @@
 			$out .= sprintf( '<input type="hidden" name="%s" id="%s" value="%s">', $id, $id, $this->field->value );
 			if ( $this->field->args( 'desc' ) ) {
 				$out .= sprintf( '<p class="cmb2-metabox-description">%s</p>', $this->field->args( 'description' ) );
+			}
+
+			if ( $return ) {
+				return $out;
 			}
 
 			echo $out;
