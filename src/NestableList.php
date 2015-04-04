@@ -62,14 +62,14 @@
 				return $legit;
 			}
 
-			$legit_keys = $this->get_elements_key_values( $legit, $key );
+			$legit_elements = $this->get_flattened_elements( $legit, $key );
 
 			// any item that hasn't got a legit key remove
 			$found    = array();
-			$filtered = $this->prune( $key, $legit_keys, $items, $found );
+			$filtered = $this->prune( $key, $legit_elements, $items, $found );
 
 			// any item that's in the options and not in the items append to the items
-			$to_add = array_diff( $legit_keys, $found );
+			$to_add = array_diff( $legit_elements, $found );
 
 			foreach ( $legit as $value ) {
 				if ( in_array( $value[ $key ], $to_add ) ) {
@@ -80,18 +80,18 @@
 			return $filtered;
 		}
 
-		protected function prune( $key, array $legit_keys, $items = array(), array &$found_keys ) {
+		protected function prune( $key, array $legit_elements, $items = array(), array &$found ) {
 			if ( empty( $items ) ) {
 				return array();
 			}
 			$pruned = array();
 			foreach ( $items as $item => $data ) {
 				if ( isset( $data['children'] ) ) {
-					$data['children'] = $this->prune( $key, $legit_keys, $data['children'], $found_keys );
+					$data['children'] = $this->prune( $key, $legit_elements, $data['children'], $found );
 				}
-				if ( isset( $data[ $key ] ) && in_array( $data[ $key ], $legit_keys ) ) {
-					$pruned[]     = $data;
-					$found_keys[] = $data[ $key ];
+				if ( isset( $data[ $key ] ) && in_array( $data[ $key ], $legit_elements ) ) {
+					$pruned[] = $data;
+					$found[]  = $data;
 					continue;
 				}
 				// if not saving data save the detached children
@@ -134,17 +134,17 @@
 		 *
 		 * @return array
 		 */
-		protected function get_elements_key_values( array $elements, $key ) {
+		protected function get_flattened_elements( array $elements, $key ) {
 			$legit_keys = array();
 			foreach ( $elements as $entry => $data ) {
 				if ( isset( $data['children'] ) ) {
-					$ret        = $this->get_elements_key_values( $data['children'], $key );
+					$ret        = $this->get_flattened_elements( $data['children'], $key );
 					$legit_keys = array_merge( $legit_keys, $ret );
 				}
 				if ( empty( $data[ $key ] ) ) {
 					continue;
 				}
-				$legit_keys[] = $data[ $key ];
+				$legit_keys[] = $data;
 			}
 
 			return $legit_keys;

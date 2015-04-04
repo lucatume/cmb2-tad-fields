@@ -21,12 +21,12 @@
 			// get to elements from the field
 			$to_elements = json_decode( $this->field->value, true );
 			// get the source keys
-			$from_keys = $this->get_elements_key_values( $from_elements, $primary_key );
+			$flattened_from_elements = $this->get_flattened_elements( $from_elements, $primary_key );
 			// prune the to elements removing those that are not in the from elements
 			$found       = array();
-			$to_elements = $this->prune( $primary_key, $from_keys, $to_elements, $found );
+			$to_elements = $this->prune( $primary_key, $flattened_from_elements, $to_elements, $found );
 			// remove pruned to elements from from elements
-			$to_keys       = $this->get_elements_key_values( $to_elements, $primary_key );
+			$to_keys       = $this->get_flattened_elements( $to_elements, $primary_key );
 			$from_elements = $this->diff( $primary_key, $to_keys, $from_elements, $found );
 			// render the to list
 			$to_list = $this->get_list_markup( $to_elements );
