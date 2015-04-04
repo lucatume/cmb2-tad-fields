@@ -1,6 +1,7 @@
 {
   "name": "lucatume/cmb2-fields",
   "description": "Additional field types for the CMB2 WordPress plugin",
+  "type": "wordpress-plugin",
   "license": "GPL 2.0",
   "authors": [
     {
@@ -28,5 +29,5 @@
   },
   "autoload": {
     "classmap": ["src/"]
-     }
+  }
 }
