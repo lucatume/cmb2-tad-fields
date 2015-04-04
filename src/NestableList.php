@@ -11,11 +11,15 @@
 
 			$elements = $this->get_aligned_field_list_elements();
 
-			$id  = $this->field->args['id'];
-			$out = sprintf( '<div class="dd single" data-output="%s">', $id );
+			$id         = $this->field->args['id'];
+			$list_attrs = array( 'data-group' => $this->field->args( 'list_group' ) );
+			$out        = sprintf( '<div class="dd single" data-output="%s" %s>', $id, $this->concat_attrs( $list_attrs ) );
 			$out .= $this->get_list_markup( $elements );
 			$out .= '</div>';
 			$out .= sprintf( '<input type="hidden" name="%s" id="%s" value="%s">', $id, $id, $this->field->value );
+			if ( $this->field->args( 'desc' ) ) {
+				$out .= sprintf( '<p class="cmb2-metabox-description">%s</p>', $this->field->args( 'description' ) );
+			}
 
 			return $out;
 		}

@@ -15,7 +15,11 @@
 			this.model.set( 'value', newValue );
 		},
 		initialize: function () {
-			this.$el.nestable().on( 'change', _.bind( this.dispatchChange, this ) );
+			var group = this.$el.data( 'group' ) || 0;
+			this.$el.nestable( {
+				'group': group
+			} );
+			this.$el.on( 'change', _.bind( this.dispatchChange, this ) );
 			this.dispatchChange();
 		}
 	} );
