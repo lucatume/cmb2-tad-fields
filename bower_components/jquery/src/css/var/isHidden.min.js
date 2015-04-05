@@ -1,0 +1,1 @@
+define(["../../core","../../selector"],function(a){return function(c,b){c=b||c;return a.css(c,"display")==="none"||!a.contains(c.ownerDocument,c)}});

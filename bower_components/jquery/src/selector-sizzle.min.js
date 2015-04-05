@@ -1,0 +1,1 @@
+define(["./core","sizzle"],function(b,a){b.find=a;b.expr=a.selectors;b.expr[":"]=b.expr.pseudos;b.unique=a.uniqueSort;b.text=a.getText;b.isXMLDoc=a.isXML;b.contains=a.contains});

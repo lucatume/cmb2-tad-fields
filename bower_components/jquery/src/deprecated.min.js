@@ -1,0 +1,1 @@
+define(["./core","./traversing"],function(a){a.fn.size=function(){return this.length};a.fn.andSelf=a.fn.addBack});

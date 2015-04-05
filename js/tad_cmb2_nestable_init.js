@@ -20,7 +20,7 @@
 				'group': group
 			} );
 			this.$el.on( 'change', _.bind( this.dispatchChange, this ) );
-			this.dispatchChange();
+			//this.dispatchChange();
 		}
 	} );
 

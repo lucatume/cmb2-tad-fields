@@ -1,0 +1,1 @@
+define(["../core","../selector","../effects"],function(a){a.expr.filters.animated=function(b){return a.grep(a.timers,function(c){return b===c.elem}).length}});

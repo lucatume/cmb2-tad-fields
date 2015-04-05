@@ -81,6 +81,7 @@
 		}
 
 		protected function prune( $key, array $legit_elements, $items = array(), array &$found ) {
+			$legits_keys = $this->get_elements_keys( $legit_elements, $key );
 			if ( empty( $items ) ) {
 				return array();
 			}
@@ -89,7 +90,7 @@
 				if ( isset( $data['children'] ) ) {
 					$data['children'] = $this->prune( $key, $legit_elements, $data['children'], $found );
 				}
-				if ( isset( $data[ $key ] ) && in_array( $data[ $key ], $legit_elements ) ) {
+				if ( isset( $data[ $key ] ) && in_array( $data[ $key ], $legits_keys ) ) {
 					$pruned[] = $data;
 					$found[]  = $data;
 					continue;
@@ -150,24 +151,38 @@
 			return $legit_keys;
 		}
 
-		protected function diff( $key, array $diff_keys, array $items = null, array &$found_keys ) {
-			$diffed = array();
-			foreach ( $items as $item => $data ) {
-				if ( isset( $data['children'] ) ) {
-					$data['children'] = $this->diff( $key, $diff_keys, $data['children'], $found_keys );
+		protected function diff( $key, array $diff_elements, array $items = null, array &$found_keys ) {
+			$diffed             = array();
+			$diff_elements_keys = $this->get_elements_keys( $diff_elements, $key );
+			foreach ( $items as $item => $element ) {
+				if ( isset( $element['children'] ) ) {
+					$element['children'] = $this->diff( $key, $diff_elements, $element['children'], $found_keys );
 				}
-				if ( isset( $data[ $key ] ) && in_array( $data[ $key ], $diff_keys ) ) {
+				if ( isset( $element[ $key ] ) && in_array( $element[ $key ], $diff_elements_keys ) ) {
 					// if not saving data save the detached children
-					if ( isset( $data['children'] ) ) {
-						$diffed = array_merge( $diffed, $data['children'] );
+					if ( isset( $element['children'] ) ) {
+						$diffed = array_merge( $diffed, $element['children'] );
 					}
 					continue;
 				}
-				$diffed[]     = $data;
-				$found_keys[] = $data[ $key ];
+				$diffed[]     = $element;
+				$found_keys[] = $element[ $key ];
 			}
 
 			return $diffed;
+		}
+
+		/**
+		 * @param array $elements
+		 * @param       $key
+		 */
+		protected function get_elements_keys( array $elements, $key ) {
+			$legit_keys = array();
+			foreach ( $elements as $element ) {
+				$legit_keys[] = $element[ $key ];
+			}
+
+			return $legit_keys;
 		}
 
 	}

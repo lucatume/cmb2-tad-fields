@@ -26,12 +26,12 @@
 			$found       = array();
 			$to_elements = $this->prune( $primary_key, $flattened_from_elements, $to_elements, $found );
 			// remove pruned to elements from from elements
-			$to_keys       = $this->get_flattened_elements( $to_elements, $primary_key );
-			$from_elements = $this->diff( $primary_key, $to_keys, $from_elements, $found );
+			$to_flattened_elements = $this->get_flattened_elements( $to_elements, $primary_key );
+			$from_elements         = $this->diff( $primary_key, $to_flattened_elements, $from_elements, $found );
 			// render the to list
 			$to_list = $this->get_list_markup( $to_elements );
 			// render the from list
-			$from_lists = $this->get_list_markup( $from_elements );
+			$from_list = $this->get_list_markup( $from_elements );
 
 			$id         = $this->field->args( 'id' );
 			$list_attrs = array( 'data-group' => $this->field->args( 'list_group' ) );
@@ -39,9 +39,9 @@
 			$out .= $to_list;
 			$out .= '</div>';
 			$out .= sprintf( '<div class="dd single" %s>', $this->concat_attrs( $list_attrs ) );
-			$out .= $from_lists;
+			$out .= $from_list;
 			$out .= '</div>';
-			$out .= sprintf( '<input type="hidden" name="%s" id="%s" value="%s">', $id, $id, $this->field->value );
+			$out .= sprintf( '<input type="hidden" name="%s" id="%s" value="%s">', $id, $id, $this->field->value() );
 			if ( $this->field->args( 'desc' ) ) {
 				$out .= sprintf( '<p class="cmb2-metabox-description">%s</p>', $this->field->args( 'description' ) );
 			}

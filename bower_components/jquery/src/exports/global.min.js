@@ -1,0 +1,1 @@
+define(["../core","../var/strundefined"],function(c,b){var a=window.jQuery,d=window.$;c.noConflict=function(e){if(window.$===c){window.$=d}if(e&&window.jQuery===c){window.jQuery=a}return c};if(typeof noGlobal===b){window.jQuery=window.$=c}});

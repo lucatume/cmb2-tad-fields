@@ -36,7 +36,6 @@
 			'type'        => 'nestable_list',
 			'list_group'  => 1,
 			'options'     => array(
-
 				// any attribute below will be translated in a `data-*` attribute.
 				// the `text` attribute will also be used as the element label
 				array(
@@ -163,6 +162,10 @@
 				array(
 					'id'   => 6,
 					'text' => 'Six'
+				),
+				array(
+					'id'   => 7,
+					'text' => 'Seven'
 				)
 			),
 			// the attribute to use to sort the elements

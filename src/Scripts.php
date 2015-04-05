@@ -47,7 +47,7 @@
 		}
 
 		public function register_jquery_nestable() {
-			wp_register_script( 'jquery-nestable', $this->get_js_src( plugins_url( '/bower_components/nestable/jquery.nestable.js', TAD_CMB2_ROOT ) ), array( 'jquery' ) );
+			wp_register_script( 'jquery-nestable', $this->get_js_src( plugins_url( '/bower_components/jquery-nestable/jquery.nestable.js', TAD_CMB2_ROOT ) ), array( 'jquery' ) );
 		}
 
 		public function register_scripts() {
