@@ -116,12 +116,10 @@ $font_1 : monospace;
 .dd-empty {
   @extend %extend_1;
   @extend %extend_2;
-  border              : 1px dashed $color_pink_swan_approx;
-  min-height          : 100px;
-  background-color    : $mercury;
-  background-image    : linear-gradient(45deg, $white 25%, transparent 25%, transparent 75%, $white 75%, $white), linear-gradient(45deg, $white 25%, transparent 25%, transparent 75%, $white 75%, $white);
-  background-size     : 60px 60px;
-  background-position : 0 0, 30px 30px;
+  border          : 1px dashed $color_pink_swan_approx;
+  min-height      : 100px;
+  background-size : 60px 60px;
+  background      : $mercury linear-gradient(45deg, $white 25%, transparent 25%, transparent 75%, $white 75%, $white), linear-gradient(45deg, $white 25%, transparent 25%, transparent 75%, $white 75%, $white) 0 0, 30px 30px;
 }
 
 .dd-placeholder {

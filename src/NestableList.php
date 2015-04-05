@@ -25,33 +25,10 @@
 		}
 
 		protected function get_list_markup( $elements ) {
-			$out                     = '';
 			$element_attrs_whitelist = array();
 			$out                     = '<ol class="dd-list">';
-			if ( empty( $elements ) ) {
-				$out .= '<div class="dd-empty"></div>';
-			} else {
-				foreach ( $elements as $key => $data ) {
-					$children      = '';
-					$element_attrs = array();
-					foreach ( $data as $sub_key => $sub_value ) {
-						if ( $sub_key != 'children' ) {
-							// add the key as a data attribute for the list element
-							$attr                   = in_array( $sub_key, $element_attrs_whitelist ) ? $sub_key : 'data-' . $sub_key;
-							$element_attrs[ $attr ] = $sub_value;
-						} else {
-							$children = $this->get_list_markup( $sub_value );
-						}
-					}
-					// render the element
-					ksort( $element_attrs );
-					$text                   = empty( $element_attrs['data-text'] ) ? '' . reset( $element_attrs ) : $element_attrs['data-text'];
-					$element_attrs['class'] = empty( $element_attrs['class'] ) ? 'dd-item' : 'dd-item ' . $element_attrs['class'];
-					$out .= sprintf( '<li %s><div class="dd-handle">%s</div>%s', $this->concat_attrs( $element_attrs ), $text, $children );
-					// close the list element
-					$out .= '</li>';
-				}
-			}
+			$out                     = empty( $elements ) ? $this->get_emtpy_element_markup() : $this->get_list_elements_markup( $elements, $element_attrs_whitelist );
+			// close the whole list
 			$out .= '</ol>';
 
 			return $out;
@@ -183,6 +160,43 @@
 			}
 
 			return $legit_keys;
+		}
+
+		/**
+		 * @param $elements
+		 * @param $element_attrs_whitelist
+		 *
+		 * @return string
+		 */
+		protected function get_list_elements_markup( $elements, $element_attrs_whitelist ) {
+			$out = '';
+			foreach ( $elements as $key => $data ) {
+				$children      = '';
+				$element_attrs = array();
+				foreach ( $data as $sub_key => $sub_value ) {
+					if ( $sub_key != 'children' ) {
+						// add the key as a data attribute for the list element
+						$attr                   = in_array( $sub_key, $element_attrs_whitelist ) ? $sub_key : 'data-' . $sub_key;
+						$element_attrs[ $attr ] = $sub_value;
+					} else {
+						$children = $this->get_list_markup( $sub_value );
+					}
+				}
+				// render the element
+				ksort( $element_attrs );
+				$text                   = empty( $element_attrs['data-text'] ) ? '' . reset( $element_attrs ) : $element_attrs['data-text'];
+				$element_attrs['class'] = empty( $element_attrs['class'] ) ? 'dd-item' : 'dd-item ' . $element_attrs['class'];
+				$out .= sprintf( '<li %s><div class="dd-handle">%s</div>%s', $this->concat_attrs( $element_attrs ), $text, $children );
+				// close the list element
+				$out .= '</li>';
+			}
+
+			return $out;
+		}
+
+		protected function get_emtpy_element_markup( $attrs = array( 'class' => 'dd-empty' ) ) {
+
+			return sprintf( '<div %s></div>', $this->concat_attrs( $attrs ) );
 		}
 
 	}
