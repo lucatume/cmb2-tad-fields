@@ -54,11 +54,9 @@ $font_1 : monospace;
   display       : block;
   margin        : 0;
   padding       : 1em;
-  width         : 100%;
   list-style    : none;
   font-size     : 13px;
   line-height   : 20px;
-  float         : right;
   border-radius : 3px;
   border        : 1px solid $color-cmb2-grey;
   &:nth-child(n+2) {
@@ -157,21 +155,6 @@ $font_1 : monospace;
   }
   > .dd-item .dd-handle {
     margin-top : 0;
-  }
-}
-
-@media only screen and (min-width : 700px) {
-  .dd {
-    float : right;
-    &.single {
-      width : 100%;
-    }
-    &.dual {
-      width : 48%;
-    }
-    + .dd {
-      margin-left : 2%;
-    }
   }
 }
 
