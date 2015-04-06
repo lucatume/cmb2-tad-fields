@@ -13,10 +13,10 @@
 
 			$id         = $this->field->args['id'];
 			$list_attrs = array( 'data-group' => $this->field->args( 'list_group' ) );
-			$out        = sprintf( '<div class="dd single" data-output="%s" %s>', $id, $this->concat_attrs( $list_attrs ) );
+			$out        = sprintf( '<div class="dd single updating-list" data-output="%s" %s>', $id, $this->concat_attrs( $list_attrs ) );
 			$out .= $this->get_list_markup( $elements );
 			$out .= '</div>';
-			$out .= sprintf( '<input type="hidden" name="%s" id="%s" value="%s">', $id, $id, $this->field->value );
+			$out .= sprintf( '<input type="hidden" name="%s" id="%s" value="">', $id, $id );
 			if ( $this->field->args( 'desc' ) ) {
 				$out .= sprintf( '<p class="cmb2-metabox-description">%s</p>', $this->field->args( 'description' ) );
 			}
@@ -26,10 +26,8 @@
 
 		protected function get_list_markup( $elements ) {
 			$element_attrs_whitelist = array();
-			$out                     = '<ol class="dd-list">';
-			$out                     = empty( $elements ) ? $this->get_emtpy_element_markup() : $this->get_list_elements_markup( $elements, $element_attrs_whitelist );
-			// close the whole list
-			$out .= '</ol>';
+
+			$out = empty( $elements ) ? $this->get_emtpy_element_markup() : $this->get_list_elements_markup( $elements, $element_attrs_whitelist );
 
 			return $out;
 		}
@@ -169,7 +167,8 @@
 		 * @return string
 		 */
 		protected function get_list_elements_markup( $elements, $element_attrs_whitelist ) {
-			$out = '';
+			$out = '<ol class="dd-list">';
+
 			foreach ( $elements as $key => $data ) {
 				$children      = '';
 				$element_attrs = array();
@@ -191,11 +190,12 @@
 				$out .= '</li>';
 			}
 
+			$out .= '</ol>';
+
 			return $out;
 		}
 
 		protected function get_emtpy_element_markup( $attrs = array( 'class' => 'dd-empty' ) ) {
-
 			return sprintf( '<div %s></div>', $this->concat_attrs( $attrs ) );
 		}
 

@@ -5,6 +5,18 @@
 	var bus = tad.bus || _.extend( {}, Backbone.Events );
 
 	var NestableList = Backbone.View.extend( {
+		initNestableList: function () {
+			var group = this.$el.data( 'group' ) || 0;
+			this.$el.nestable( {
+				'group': group
+			} );
+		},
+		initialize: function () {
+			this.initNestableList();
+		}
+	} );
+
+	var UpdatingNestableList = NestableList.extend( {
 		getLIstValue: function () {
 			var newValue = this.$el.nestable( 'serialize' );
 			return newValue;
@@ -14,13 +26,12 @@
 			bus.trigger( 'tad-cmb2:nestable-list-change', newValue, this.$el );
 			this.model.set( 'value', newValue );
 		},
-		initialize: function () {
-			var group = this.$el.data( 'group' ) || 0;
-			this.$el.nestable( {
-				'group': group
-			} );
+		bindEvents: function () {
 			this.$el.on( 'change', _.bind( this.dispatchChange, this ) );
-			//this.dispatchChange();
+		}, initialize: function () {
+			this.initNestableList();
+			this.bindEvents();
+			this.dispatchChange();
 		}
 	} );
 
@@ -44,7 +55,12 @@
 			var $input = $list.siblings( 'input[type="hidden"]' );
 			var listValue = new NestableListValue();
 			new NestableInput( {el: $input, model: listValue} );
-			new NestableList( {el: $list, model: listValue} );
+			if ( $list.hasClass( 'updating-list' ) ) {
+				new UpdatingNestableList( {el: $list, model: listValue} );
+			} else {
+				new NestableList( {el: $list} );
+			}
 		} );
 	} );
-})( jQuery, window );
+})
+( jQuery, window );

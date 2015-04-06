@@ -35,13 +35,13 @@
 
 			$id         = $this->field->args( 'id' );
 			$list_attrs = array( 'data-group' => $this->field->args( 'list_group' ) );
-			$out        = sprintf( '<div class="dd single" data-output="%s" %s>', $id, $this->concat_attrs( $list_attrs ) );
+			$out        = sprintf( '<div class="dd single updating-list" data-output="%s" %s>', $id, $this->concat_attrs( $list_attrs ) );
 			$out .= $to_list;
 			$out .= '</div>';
 			$out .= sprintf( '<div class="dd single" %s>', $this->concat_attrs( $list_attrs ) );
 			$out .= $from_list;
 			$out .= '</div>';
-			$out .= sprintf( '<input type="hidden" name="%s" id="%s" value="%s">', $id, $id, $this->field->value() );
+			$out .= sprintf( '<input type="hidden" name="%s" id="%s" value="">', $id, $id );
 			if ( $this->field->args( 'desc' ) ) {
 				$out .= sprintf( '<p class="cmb2-metabox-description">%s</p>', $this->field->args( 'description' ) );
 			}
