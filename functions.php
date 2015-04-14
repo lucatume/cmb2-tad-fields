@@ -1,7 +1,5 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: Luca
- * Date: 14/04/15
- * Time: 14:51
- */
+
+	function tad_extract_keys_from_list( $post_id, $meta_key, $key = 'id', $key_value = null ) {
+		return tad_cmb2_NestableList::extract_elements_from_list( $post_id, $meta_key, $key, $key_value );
+	}
