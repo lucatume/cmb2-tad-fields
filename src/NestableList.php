@@ -199,4 +199,30 @@
 			return sprintf( '<div %s></div>', $this->concat_attrs( $attrs ) );
 		}
 
+		public static function extract_elements_from_list( $post_id, $meta_key, $key = 'id', $key_value = null ) {
+			$elements = json_decode( get_post_meta( $post_id, $meta_key, true ) );
+
+			if ( empty( $elements ) ) {
+				return array();
+			}
+			$_this = new self;
+			if ( ! empty( $key_value ) ) {
+				array_walk_recursive( $elements, array(
+					$_this,
+					'extract_subelements'
+				), $key, $key_value, $elements );
+			}
+
+			return array_map( array( $_this, 'extract_element_key_value' ), $elements );
+		}
+
+		private function extract_subelements( $value, $index, $key, $key_value, &$elements ) {
+			if ( $value->$key == $key_value ) {
+				$elements = $value;
+			}
+		}
+
+		private function extract_element_key_value( stdClass $el, $key = 'id' ) {
+			return $el->$key;
+		}
 	}
