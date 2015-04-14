@@ -12,7 +12,8 @@
   "minimum-stability": "dev",
   "require": {
     "electrolinux/phpquery": "dev-master",
-    "xrstf/composer-php52": "~1.0@dev"
+    "xrstf/composer-php52": "~1.0@dev",
+    "composer/installers": "~1.0"
   },
   "scripts": {
     "post-install-cmd": [
