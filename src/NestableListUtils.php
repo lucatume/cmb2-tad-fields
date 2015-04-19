@@ -4,6 +4,16 @@
 	class tad_cmb2_NestableListUtils {
 
 		/**
+		 * @var array
+		 */
+		protected $elements;
+
+		/**
+		 * @var string|int
+		 */
+		protected $key_value;
+
+		/**
 		 * Extracts the elements unique keys for a list level.
 		 *
 		 * @param        $post_id   The ID of the post to which the nestable list is a meta.
@@ -19,20 +29,24 @@
 			if ( empty( $elements ) ) {
 				return array();
 			}
-			$_this = new self;
+			$_this            = new self;
+			$_this->elements  = $elements;
+			$_this->key_value = $key_value;
 			if ( ! empty( $key_value ) ) {
 				array_walk_recursive( $elements, array(
 					$_this,
 					'extract_subelements'
-				), $key, $key_value, $elements );
+				), $key );
 			}
 
-			return array_map( array( $_this, 'extract_element_key_value' ), $elements );
+			$return = array_map( array( $_this, 'extract_element_key_value' ), (array) $_this->elements );
+
+			return $return;
 		}
 
-		private function extract_subelements( $value, $index, $key, $key_value, &$elements ) {
-			if ( $value->$key == $key_value ) {
-				$elements = $value;
+		private function extract_subelements( $value, $index, $key ) {
+			if ( $value->$key == $this->key_value ) {
+				$this->elements = isset( $value->children ) ? $value->children : array();
 			}
 		}
 
