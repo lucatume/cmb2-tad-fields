@@ -48,6 +48,7 @@ A [jquery-nestable](https://github.com/thesabbir/jquery-nestable) powered nestab
 To allow for the nestable list to properly work some options must be provided:
 
 * `list_group` - specifying this value allows for elements to be moved from different lists. Defaults to `0`.
+* `max_depth` - specifying this value to an int value sets the maxDepth setting of the list to it. Defaults to `5`.
 * `primary_key` - an attribute of each element in the list that must be set and unique.
 
 To set the list options must be provided in a specific format: each element in the list is an array, each array contains a different value for the `primary_key`; if a `text` value is set the list element will sport that text as label. Each additional field will be stored as a `data-*` attribute on the list element and saved along with it.
