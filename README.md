@@ -16,6 +16,10 @@ Go the WordPress installation plugin folder and clone the repository there:
 and remove the `.git` folder
 	
 	cd cmb2-tad-fields && rm -rf .git
+
+and then, being a work in progress, update [Composer](https://getcomposer.org/) dependencies
+
+	composer update --prefer-dist
 	
 ### Manual installation
 Download the latest master version [from GitHub](https://github.com/lucatume/cmb2-tad-fields/archive/master.zip) and manually move the folder to the WordPress plugins folder.
