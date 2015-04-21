@@ -7,8 +7,10 @@
 	var NestableList = Backbone.View.extend( {
 		initNestableList: function () {
 			var group = this.$el.data( 'group' ) || 0;
+			var maxDepth= this.$el.data( 'max-depth' ) || 0;
 			this.$el.nestable( {
-				'group': group
+				'group': group,
+				'maxdepth': maxDepth
 			} );
 		},
 		initialize: function () {

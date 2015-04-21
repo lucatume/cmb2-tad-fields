@@ -12,7 +12,10 @@
 			$elements = $this->get_aligned_field_list_elements();
 
 			$id         = $this->field->args['id'];
-			$list_attrs = array( 'data-group' => $this->field->args( 'list_group' ) );
+			$list_attrs = array(
+				'data-group'     => $this->field->args( 'list_group' ),
+				'data-max-depth' => $this->field->args( 'max_depth' )
+			);
 			$out        = sprintf( '<div class="dd single updating-list" data-output="%s" %s>', $id, $this->concat_attrs( $list_attrs ) );
 			$out .= $this->get_list_markup( $elements );
 			$out .= '</div>';

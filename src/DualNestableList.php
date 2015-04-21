@@ -34,10 +34,14 @@
 			$from_list = $this->get_list_markup( $from_elements );
 
 			$id         = $this->field->args( 'id' );
-			$list_attrs = array( 'data-group' => $this->field->args( 'list_group' ) );
+			$list_attrs = array(
+				'data-group'     => $this->field->args( 'list_group' ),
+				'data-max-depth' => $this->field->args( 'max_depth' )
+			);
 			$out        = sprintf( '<div class="dd single updating-list" data-output="%s" %s>', $id, $this->concat_attrs( $list_attrs ) );
 			$out .= $to_list;
 			$out .= '</div>';
+			$list_attrs['data-max-depth'] = 1;
 			$out .= sprintf( '<div class="dd single" %s>', $this->concat_attrs( $list_attrs ) );
 			$out .= $from_list;
 			$out .= '</div>';
